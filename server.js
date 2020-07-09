@@ -34,7 +34,38 @@ function promptUser() {
         }
     ]).then(function(data) {
         switch (data.userChoice) {
+            case "Add a department":
+                addDepartment();
+                break;
 
+            case "Add an employee":
+                addEmployee();
+                break;
+
+            case "Add a role":
+                addRole();
+                break;
+
+            case "View departments":
+                viewDepartments();
+                break;
+
+            case "View employees":
+                viewEmployees();
+                break;
+
+            case "View roles":
+                viewRoles();
+                break;
+
+            case "Update Employee Roles":
+                updateEmployeeRoles();
+                break;
+
+            case "No need to do any more.":
+                stop();
+                break;
         }
     })
 }
+
