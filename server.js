@@ -6,7 +6,7 @@ var connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
     user: "root",
-    password: "Aworldofideas1!",
+    password: "*****",
     database: "personnel_db"
 });
 
@@ -239,28 +239,22 @@ function deleteRole() {
 
 function updateEmployeeRoles() {
     inquirer.prompt([{
-            name: "roleID",
-            message: "What is the ID number of the role you would like to update?",
+            name: "employeeID",
+            message: "What is the ID number of the employee who's role you would like to update?",
             type: "input"
         },
         {
             name: "updateRoleTitle",
-            message: "What is the new title of the updated role?",
-            type: "input"
-        },
-        {
-            name: "updateRoleSalary",
-            message: "What is the salary of the updated role?",
+            message: "What is the new role for this employee?",
             type: "input"
         },
     ]).then((data) => {
-        connection.query("UPDATE roles SET ? WHERE ? ",
+        connection.query("UPDATE employee SET ? WHERE ? ",
             [{
                     title: data.updateRoleTitle,
-                    salary: parseInt(data.updateEmployeeSalary)
                 },
                 {
-                    role_id: data.roleID
+                    emplo_id: data.employeeID
                 }
             ],
             function (err, res) {
