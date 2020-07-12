@@ -6,7 +6,7 @@ var connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
     user: "root",
-    password: "******",
+    password: "****",
     database: "personnel_db"
 });
 
@@ -21,13 +21,16 @@ function promptUser() {
         message: "What do you want to do?",
         type: "list",
         choices: [
-            "Add a department",
-            "Add an employee",
-            "Add a role",
             "View departments",
             "View employees",
             "View roles",
-            "Update Employee Roles",
+            "Add a department",
+            "Add an employee",
+            "Add a role",
+            "Remove employee",
+            "Remove department",
+            "Remove role",
+            "Update existing role",
             "No need to do any more."
         ]
     }]).then(function (data) {
@@ -56,8 +59,20 @@ function promptUser() {
                 viewRoles();
                 break;
 
-            case "Update Employee Roles":
+            case "Update existing role":
                 updateEmployeeRoles();
+                break;
+
+            case "Remove employee":
+                deleteEmployee();
+                break;
+
+            case "Remove department":
+                deleteDepartment();
+                break;
+
+            case "Remove role":
+                deleteRole();
                 break;
 
             case "No need to do any more.":
@@ -73,19 +88,18 @@ function addDepartment() {
         message: 'Enter the department you would like to add',
         type: 'input'
     }).then((data) => {
-        connection.query("INSERT INTO department (department_name) VALUES (?)", [data.department], function(err, result) {
+        connection.query("INSERT INTO department (department_name) VALUES (?)", [data.department], function (err, result) {
             if (err) {
-              throw err;
+                throw err;
             }
             console.log("Department added successfully");
             return promptUser();
-          });
+        });
     });
 }
 
 function addEmployee() {
-    inquirer.prompt([
-        {
+    inquirer.prompt([{
             name: 'firstName',
             message: "What is the employee's first name?",
             type: 'input'
@@ -101,19 +115,18 @@ function addEmployee() {
             type: "input"
         },
     ]).then((data) => {
-        connection.query("INSERT INTO employee (firstName, lastName, role_id) VALUES (?, ?, ?)", [data.firstName, data.lastName, data.employeeRoleID], function(err, result) {
+        connection.query("INSERT INTO employee (firstName, lastName, role_id) VALUES (?, ?, ?)", [data.firstName, data.lastName, data.employeeRoleID], function (err, result) {
             if (err) {
-              throw err;
+                throw err;
             }
             console.log("Employee added successfully");
             return promptUser();
-          });
+        });
     });
 }
 
 function addRole() {
-    inquirer.prompt([
-        {
+    inquirer.prompt([{
             name: 'role',
             message: 'Enter the role you would like to add',
             type: 'input'
@@ -124,13 +137,13 @@ function addRole() {
             type: "input"
         },
     ]).then((data) => {
-        connection.query("INSERT INTO roles (title, salary) VALUES (?, ?)", [data.role, data.salary], function(err, result) {
+        connection.query("INSERT INTO roles (title, salary) VALUES (?, ?)", [data.role, data.salary], function (err, result) {
             if (err) {
-              throw err;
+                throw err;
             }
             console.log("Role added successfully");
             return promptUser();
-          });
+        });
     });
 }
 
@@ -159,6 +172,27 @@ function viewRoles() {
         console.table(res);
     })
     promptUser();
+}
+
+function deleteEmployee() {
+    connection.query("SELECT * FROM employee", (err) => {
+        if (err) throw err;
+        inquirer
+            .prompt([{
+                name: "deleteEmployee",
+                type: "input",
+                message: "Enter employee ID"
+            }])
+            .then((data) => {
+                connection.query("DELETE FROM employee where ?", {
+
+                    employee_id: data.deleteEmployee
+
+                });
+                console.log("Employee removed")
+                promptUser();
+            });
+    });
 }
 
 
