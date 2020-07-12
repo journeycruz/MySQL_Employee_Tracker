@@ -6,7 +6,7 @@ var connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
     user: "root",
-    password: "*****",
+    password: "******",
     database: "personnel_db"
 });
 
@@ -97,21 +97,16 @@ function addEmployee() {
         },
         {
             name: "employeeRoleID",
-            message: "What is the employee's role ID?",
+            message: "Enter the role ID of this employee",
             type: "input"
         },
-        {
-            name: "employeeManagerID",
-            message: "What is the employee's manager's ID? (Please input null if no manager)",
-            type: "input"
-        }
-    ]).then(function(answers){
-        connection.query("INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)", [answers.employeeFN, answers.employeeLN, answers.employeeRoleID, answers.employeeManagerID], function(err, result) {
+    ]).then((data) => {
+        connection.query("INSERT INTO employee (firstName, lastName, role_id) VALUES (?, ?, ?)", [data.firstName, data.lastName, data.employeeRoleID], function(err, result) {
             if (err) {
               throw err;
             }
-            console.log("Added employee.");
-            return main();
+            console.log("Employee added successfully");
+            return promptUser();
           });
     });
 }
@@ -129,7 +124,7 @@ function addRole() {
             type: "input"
         },
     ]).then((data) => {
-        connection.query("INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)", [data.role, data.salary,], function(err, result) {
+        connection.query("INSERT INTO roles (title, salary) VALUES (?, ?)", [data.role, data.salary], function(err, result) {
             if (err) {
               throw err;
             }
