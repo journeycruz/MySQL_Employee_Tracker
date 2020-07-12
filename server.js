@@ -202,15 +202,15 @@ function deleteDepartment() {
             .prompt([{
                 name: "deleteDepartment",
                 type: "input",
-                message: "What department would you like to remove"
+                message: "Enter the ID number for the department you would like to remove"
             }])
             .then((data) => {
                 connection.query("DELETE FROM department where ?", {
 
-                    employee_id: data.deleteEmployee
+                    department_id: data.deleteDepartment
 
                 });
-                console.log("Employee removed")
+                console.log("Department removed")
                 promptUser();
             });
     });
