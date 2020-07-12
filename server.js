@@ -181,7 +181,7 @@ function deleteEmployee() {
             .prompt([{
                 name: "deleteEmployee",
                 type: "input",
-                message: "Enter employee ID"
+                message: "Enter the ID number for the employee you would like to remove"
             }])
             .then((data) => {
                 connection.query("DELETE FROM employee where ?", {
@@ -216,6 +216,26 @@ function deleteDepartment() {
     });
 }
 
+function deleteRole() {
+    connection.query("SELECT * FROM roles", (err) => {
+        if (err) throw err;
+        inquirer
+            .prompt([{
+                name: "deleteRole",
+                type: "input",
+                message: "Enter the ID number for the role you would like to remove"
+            }])
+            .then((data) => {
+                connection.query("DELETE FROM roles where ?", {
+
+                    role_id: data.deleteRole
+
+                });
+                console.log("Role removed")
+                promptUser();
+            });
+    });
+}
 
 async function updateEmployeeRoles() {
     inquirer.prompt([{
