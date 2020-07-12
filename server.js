@@ -6,7 +6,7 @@ var connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
     user: "root",
-    password: "****",
+    password: "DGE32RS",
     database: "personnel_db"
 });
 
@@ -92,7 +92,9 @@ function addDepartment() {
             if (err) {
                 throw err;
             }
+            console.log("\n----------\n");
             console.log("Department added successfully");
+            console.log("\n----------\n");
             return promptUser();
         });
     });
@@ -119,7 +121,10 @@ function addEmployee() {
             if (err) {
                 throw err;
             }
+            console.log("\n----------\n");
             console.log("Employee added successfully");
+            console.log("\n----------\n");
+
             return promptUser();
         });
     });
@@ -141,7 +146,9 @@ function addRole() {
             if (err) {
                 throw err;
             }
+            console.log("\n----------\n");
             console.log("Role added successfully");
+            console.log("\n----------\n");
             return promptUser();
         });
     });
@@ -150,7 +157,9 @@ function addRole() {
 function viewDepartments() {
     connection.query("SELECT * FROM department", function (err, res) {
         if (err) throw err;
-        console.log("\n Departments currently in personnel_db \n");
+        console.log("\n----------\n");
+        console.log("Departments currently in personnel_db");
+        console.log("\n----------\n");
         console.table(res);
     })
     promptUser();
@@ -159,7 +168,9 @@ function viewDepartments() {
 function viewEmployees() {
     connection.query("SELECT * FROM employee", function (err, res) {
         if (err) throw err;
-        console.log("\n Employees currently in personnel_db \n");
+        console.log("\n----------\n");
+        console.log("Employees currently in personnel_db");
+        console.log("\n----------\n");
         console.table(res);
     })
     promptUser();
@@ -168,7 +179,9 @@ function viewEmployees() {
 function viewRoles() {
     connection.query("SELECT * FROM roles", function (err, res) {
         if (err) throw err;
-        console.log("\n Roles currently in personnel_db \n");
+        console.log("\n----------\n");
+        console.log("Roles currently in personnel_db");
+        console.log("\n----------\n");
         console.table(res);
     })
     promptUser();
@@ -189,7 +202,9 @@ function deleteEmployee() {
                     employee_id: data.deleteEmployee
 
                 });
+                console.log("\n----------\n");
                 console.log("Employee removed")
+                console.log("\n----------\n");
                 promptUser();
             });
     });
@@ -210,7 +225,9 @@ function deleteDepartment() {
                     department_id: data.deleteDepartment
 
                 });
+                console.log("\n----------\n");
                 console.log("Department removed")
+                console.log("\n----------\n");
                 promptUser();
             });
     });
@@ -231,7 +248,9 @@ function deleteRole() {
                     role_id: data.deleteRole
 
                 });
+                console.log("\n----------\n");
                 console.log("Role removed")
+                console.log("\n----------\n");
                 promptUser();
             });
     });
@@ -268,6 +287,8 @@ function updateEmployeeRoles() {
 }
 
 function stop() {
+    console.log("\n----------\n");
     console.log("Connection to personnel_db ended");
+    console.log("\n----------\n");
     connection.end();
 }
