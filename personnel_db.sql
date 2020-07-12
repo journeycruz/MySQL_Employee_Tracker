@@ -5,16 +5,15 @@ USE personnel_db;
 
 CREATE TABLE department (
   department_id INT AUTO_INCREMENT NOT NULL,
-  employee_name varchar(30) NOT NULL,
-  PRIMARY KEY(id)
+  department_name varchar(30) NOT NULL,
+  PRIMARY KEY(department_id)
 );
 
 CREATE TABLE roles (
   role_id INT AUTO_INCREMENT NOT NULL,
   title VARCHAR(30),
-  salary DECIMAL(2),
-  department_id INTEGER,
-  FOREIGN KEY(department_id) REFERENCES department (department_id),
+  salary INT,
+  department_id INT AUTO_INCREMENT NOT NULL,
   PRIMARY KEY (role_id)
 );
 
@@ -23,9 +22,7 @@ CREATE TABLE employee (
   firstName VARCHAR(30),
   lastName VARCHAR(30),
   role_id INT,
-  manager_id INT,
   PRIMARY KEY (employee_id)
 );
-
 
 SELECT * FROM employees, roles, salary;

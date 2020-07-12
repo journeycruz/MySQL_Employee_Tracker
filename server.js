@@ -6,7 +6,7 @@ var connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
     user: "root",
-    password: "****",
+    password: "Aworldofideas1!",
     database: "personnel_db"
 });
 
@@ -185,6 +185,27 @@ function deleteEmployee() {
             }])
             .then((data) => {
                 connection.query("DELETE FROM employee where ?", {
+
+                    employee_id: data.deleteEmployee
+
+                });
+                console.log("Employee removed")
+                promptUser();
+            });
+    });
+}
+
+function deleteDepartment() {
+    connection.query("SELECT * FROM department", (err) => {
+        if (err) throw err;
+        inquirer
+            .prompt([{
+                name: "deleteDepartment",
+                type: "input",
+                message: "What department would you like to remove"
+            }])
+            .then((data) => {
+                connection.query("DELETE FROM department where ?", {
 
                     employee_id: data.deleteEmployee
 
