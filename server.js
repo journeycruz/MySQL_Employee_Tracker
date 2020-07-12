@@ -1,6 +1,6 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
-var app = express();
+//var app = express();
 
 var connection = mysql.createConnection({
     host: "localhost",
@@ -73,7 +73,7 @@ function addDepartment() {
         message: 'Enter the department you would like to add',
         type: 'input'
     }).then((data) => {
-        connection.query("INSERT INTO department (name) VALUES (?)", [data.department], function(err, result) {
+        connection.query("INSERT INTO department (department_name) VALUES (?)", [data.department], function(err, result) {
             if (err) {
               throw err;
             }
@@ -84,7 +84,36 @@ function addDepartment() {
 }
 
 function addEmployee() {
-
+    inquirer.prompt([
+        {
+            name: 'firstName',
+            message: "What is the employee's first name?",
+            type: 'input'
+        },
+        {
+            name: "lastName",
+            message: "What is the employee's last name?",
+            type: "input"
+        },
+        {
+            name: "employeeRoleID",
+            message: "What is the employee's role ID?",
+            type: "input"
+        },
+        {
+            name: "employeeManagerID",
+            message: "What is the employee's manager's ID? (Please input null if no manager)",
+            type: "input"
+        }
+    ]).then(function(answers){
+        connection.query("INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)", [answers.employeeFN, answers.employeeLN, answers.employeeRoleID, answers.employeeManagerID], function(err, result) {
+            if (err) {
+              throw err;
+            }
+            console.log("Added employee.");
+            return main();
+          });
+    });
 }
 
 function addRole() {
@@ -170,6 +199,6 @@ async function updateEmployeeRoles() {
 }
 
 function stop() {
-    console.log("Ending connection to personnel_db");
+    console.log("Connection to personnel_db ended");
     connection.end();
 }
