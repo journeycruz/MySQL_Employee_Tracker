@@ -6,7 +6,7 @@ var connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
     user: "root",
-    password: "*****",
+    password: "Aworldofideas1!",
     database: "personnel_db"
 });
 
@@ -237,33 +237,38 @@ function deleteRole() {
     });
 }
 
-async function updateEmployeeRoles() {
+function updateEmployeeRoles() {
     inquirer.prompt([{
-            name: "title",
-            message: "What is the title of the updated role?",
+            name: "roleID",
+            message: "What is the ID number of the role you would like to update?",
             type: "input"
         },
         {
-            name: "salary",
+            name: "updateRoleTitle",
+            message: "What is the new title of the updated role?",
+            type: "input"
+        },
+        {
+            name: "updateRoleSalary",
             message: "What is the salary of the updated role?",
             type: "input"
         },
     ]).then((data) => {
-        app.get("/:roles", function (req, res) {
-            connection.query("UPDATE roles WHERE ? ",
-                [{
-                        title: (`${data.title}`)
-                    },
-                    {
-                        salary: (`${data.salary}`)
-                    }
-                ],
-                function (err, res) {
-                    if (err) throw err;
-                    console.table(res);
-                })
-            promptUser();
-        })
+        connection.query("UPDATE roles SET ? WHERE ? ",
+            [{
+                    title: data.updateRoleTitle,
+                    salary: parseInt(data.updateEmployeeSalary)
+                },
+                {
+                    role_id: data.roleID
+                }
+            ],
+            function (err, res) {
+                if (err) throw err;
+                console.table(res);
+            })
+        promptUser();
+
     })
 
 }
