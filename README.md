@@ -5,7 +5,7 @@ https://drive.google.com/file/d/14WaPPEGHdnQBjlYqOlqPaGJxBvC7n0S5/view
 
 ## Description 
             
-This is a functional application that will connect to a MySQL database that holds employee data and allow a user to edit that data using the node.js and the command line.     
+This is a functional application that will connect to a MySQL database that holds employee data and allow a user to edit that data using node.js and the command line.     
             
             
 ## Installation
