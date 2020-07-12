@@ -6,7 +6,7 @@ var connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
     user: "root",
-    password: "*****",
+    password: "****",
     database: "personnel_db"
 });
 
@@ -244,17 +244,17 @@ function updateEmployeeRoles() {
             type: "input"
         },
         {
-            name: "updateRoleTitle",
-            message: "What is the new role for this employee?",
+            name: "updateRoleID",
+            message: "What is the ID number for the role you would like to assign this employee?",
             type: "input"
         },
     ]).then((data) => {
         connection.query("UPDATE employee SET ? WHERE ? ",
             [{
-                    title: data.updateRoleTitle,
+                    role_id: data.updateRoleID,
                 },
                 {
-                    emplo_id: data.employeeID
+                    employee_id: data.employeeID
                 }
             ],
             function (err, res) {
