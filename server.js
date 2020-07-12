@@ -1,12 +1,13 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
+var app = express();
 
 var connection = mysql.createConnection({
     host: "localhost",
     port: 3306,
     user: "root",
-    password: "password",
-    database: "top_songsDB"
+    password: "Aworldofideas1!",
+    database: "personnel_db"
 });
 
 connection.connect(function (err) {
@@ -67,7 +68,19 @@ function promptUser() {
 }
 
 function addDepartment() {
-
+    inquirer.prompt({
+        name: 'department',
+        message: 'Enter the department you would like to add',
+        type: 'input'
+    }).then((data) => {
+        connection.query("INSERT INTO department (name) VALUES (?)", [data.department], function(err, result) {
+            if (err) {
+              throw err;
+            }
+            console.log("Department added successfully");
+            return promptUser();
+          });
+    });
 }
 
 function addEmployee() {
@@ -75,11 +88,35 @@ function addEmployee() {
 }
 
 function addRole() {
-
+    inquirer.prompt([
+        {
+            name: 'role',
+            message: 'Enter the role you would like to add',
+            type: 'input'
+        },
+        {
+            name: "salary",
+            message: "What is the salary for this role?",
+            type: "input"
+        },
+    ]).then((data) => {
+        connection.query("INSERT INTO role (title, salary, department_id) VALUES (?, ?, ?)", [data.role, data.salary,], function(err, result) {
+            if (err) {
+              throw err;
+            }
+            console.log("Role added successfully");
+            return promptUser();
+          });
+    });
 }
 
 function viewDepartments() {
-
+    connection.query("SELECT * FROM department", function (err, res) {
+        if (err) throw err;
+        console.log("\n Departments currently in personnel_db \n");
+        console.table(res);
+    })
+    promptUser();
 }
 
 function viewEmployees() {
@@ -92,13 +129,47 @@ function viewEmployees() {
 }
 
 function viewRoles() {
-
+    connection.query("SELECT * FROM roles", function (err, res) {
+        if (err) throw err;
+        console.log("\n Roles currently in personnel_db \n");
+        console.table(res);
+    })
+    promptUser();
 }
 
-function updateEmployeeRoles() {
+
+async function updateEmployeeRoles() {
+    inquirer.prompt([{
+            name: "title",
+            message: "What is the title of the updated role?",
+            type: "input"
+        },
+        {
+            name: "salary",
+            message: "What is the salary of the updated role?",
+            type: "input"
+        },
+    ]).then((data) => {
+        app.get("/:roles", function (req, res) {
+            connection.query("UPDATE roles WHERE ? ",
+                [{
+                        title: (`${data.title}`)
+                    },
+                    {
+                        salary: (`${data.salary}`)
+                    }
+                ],
+                function (err, res) {
+                    if (err) throw err;
+                    console.table(res);
+                })
+            promptUser();
+        })
+    })
 
 }
 
 function stop() {
-
+    console.log("Ending connection to personnel_db");
+    connection.end();
 }
